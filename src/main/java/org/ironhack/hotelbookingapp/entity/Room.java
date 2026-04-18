@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.entity;
 
+
 import jakarta.persistence.*;
 import org.ironhack.hotelbookingapp.enums.RoomType;
 
@@ -22,4 +23,5 @@ public class Room {
     private Hotel hotel;
 
     private boolean available;
+
 }
