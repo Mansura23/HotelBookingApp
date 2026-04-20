@@ -2,9 +2,15 @@ package org.ironhack.hotelbookingapp.entity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.ironhack.hotelbookingapp.enums.RoomType;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
