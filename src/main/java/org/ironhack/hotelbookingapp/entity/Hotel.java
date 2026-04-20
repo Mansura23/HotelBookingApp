@@ -20,6 +20,8 @@ public class Hotel {
 
     private String country;
 
+    private String city;
+
     private String address;
 
     private double rating;
