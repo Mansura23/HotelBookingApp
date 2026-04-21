@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ironhack.hotelbookingapp.enums.RoomType;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class Room {
     private String roomNumber;
 
     @Column(name="price_per_night")
-    private double pricePerNight;
+    private BigDecimal pricePerNight;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;
