@@ -5,11 +5,14 @@ import org.ironhack.hotelbookingapp.dto.RoomRequestUpdateDto;
 import org.ironhack.hotelbookingapp.dto.RoomResponseDto;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.entity.Room;
+import org.ironhack.hotelbookingapp.exception.HotelNotFound;
+import org.ironhack.hotelbookingapp.exception.RoomNotFound;
 import org.ironhack.hotelbookingapp.mapper.RoomMapper;
 import org.ironhack.hotelbookingapp.repository.HotelRepository;
 import org.ironhack.hotelbookingapp.repository.RoomRepository;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class RoomService {
 
     public RoomResponseDto findById(Long id){
         Room room=roomRepository.findById(id)
-                .orElseThrow(()->  new RuntimeException("Room not found"));
+                .orElseThrow(()->  new RoomNotFound("Room not found"));
 
         return RoomMapper.toResponse(room);
     }
@@ -39,7 +42,7 @@ public class RoomService {
 
     public RoomResponseDto create(RoomRequestDto request){
         Hotel hotel=hotelRepository.findById(request.getHotelId())
-                .orElseThrow(()->  new RuntimeException("Hotel not found"));
+                .orElseThrow(()->  new HotelNotFound("Hotel not found"));
 
         Room room=RoomMapper.toEntity(request,hotel);
 
@@ -48,13 +51,14 @@ public class RoomService {
         return RoomMapper.toResponse(savedRoom);
     }
 
+    @Transactional
     public RoomResponseDto update(Long id,RoomRequestUpdateDto request){
         Room room=roomRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Room not found"));
+                .orElseThrow(()->new RoomNotFound("Room not found"));
 
         if(request.getHotelId()!=null){
             Hotel hotel=hotelRepository.findById(request.getHotelId())
-                    .orElseThrow(()->  new RuntimeException("Hotel not found"));
+                    .orElseThrow(()->  new HotelNotFound("Hotel not found"));
 
             room.setHotel(hotel);
         }
@@ -77,9 +81,10 @@ public class RoomService {
         return RoomMapper.toResponse(updatedRoom);
     }
 
+    @Transactional
     public void delete(Long id){
         if(!roomRepository.existsById(id)){
-            throw new RuntimeException("Room not found");
+            throw new RoomNotFound("Room not found");
         }
 
         roomRepository.deleteById(id);
