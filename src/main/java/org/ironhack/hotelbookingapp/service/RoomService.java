@@ -85,4 +85,10 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
+    public List<RoomResponseDto> findAllByHotelId(Long hotelId){
+        List<Room> rooms=roomRepository.findByHotelId(hotelId);
+
+        return RoomMapper.toResponseList(rooms);
+    }
+
 }
