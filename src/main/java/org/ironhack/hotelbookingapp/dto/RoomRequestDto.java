@@ -1,48 +1,28 @@
 package org.ironhack.hotelbookingapp.dto;
 
 
+import jakarta.validation.constraints.*;
+import lombok.Data;
 import org.ironhack.hotelbookingapp.enums.RoomType;
 
+import java.math.BigDecimal;
+
+@Data
 public class RoomRequestDto {
     @NotBlank
+    @Size(min = 1, max = 50)
     private String roomNumber;
 
-    private double pricePerNight;
+    @DecimalMin("0.01")
+    @Digits(integer = 6, fraction = 2)
+    private BigDecimal pricePerNight;
 
+    @NotNull
     private RoomType type;
 
+    @NotNull
     private Long hotelId;
 
 
-    public String getRoomNumber() {
-        return roomNumber;
-    }
 
-    public void setRoomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-    }
-
-    public double getPricePerNight() {
-        return pricePerNight;
-    }
-
-    public void setPricePerNight(double pricePerNight) {
-        this.pricePerNight = pricePerNight;
-    }
-
-    public RoomType getType() {
-        return type;
-    }
-
-    public void setType(RoomType type) {
-        this.type = type;
-    }
-
-    public Long getHotelId() {
-        return hotelId;
-    }
-
-    public void setHotelId(Long hotelId) {
-        this.hotelId = hotelId;
-    }
 }

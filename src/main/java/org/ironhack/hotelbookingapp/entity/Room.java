@@ -22,6 +22,7 @@ public class Room {
     @Column(name="price_per_night")
     private double pricePerNight;
 
+    @Enumerated(EnumType.STRING)
     private RoomType type;
 
     @ManyToOne
