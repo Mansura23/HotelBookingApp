@@ -17,10 +17,13 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "check_in_date")
     private LocalDate checkInDate;
 
+    @Column(name = "check_out_date")
     private LocalDate checkOutDate;
 
+    @Column(name = "total_price")
     private Double totalPrice;
 
     private String status;
