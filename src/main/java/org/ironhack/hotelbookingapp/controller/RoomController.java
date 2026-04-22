@@ -48,9 +48,16 @@ public class RoomController {
         return roomService.update(id,request);
     }
 
+    @PutMapping("/{id}")
+    public RoomResponseDto fullUpdate(@PathVariable Long id, @Valid @RequestBody RoomRequestDto request){
+        return roomService.updateFull(id, request);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         roomService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
