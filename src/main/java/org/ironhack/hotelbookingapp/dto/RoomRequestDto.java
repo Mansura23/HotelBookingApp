@@ -15,6 +15,7 @@ public class RoomRequestDto {
 
     @DecimalMin("0.01")
     @Digits(integer = 6, fraction = 2)
+    @NotNull
     private BigDecimal pricePerNight;
 
     @NotNull

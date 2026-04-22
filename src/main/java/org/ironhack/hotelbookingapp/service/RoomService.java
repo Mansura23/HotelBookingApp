@@ -82,6 +82,24 @@ public class RoomService {
     }
 
     @Transactional
+    public RoomResponseDto updateFull(Long id,RoomRequestDto request){
+        Room room=roomRepository.findById(id)
+                .orElseThrow(()->new RoomNotFound("Room not found"));
+
+        room.setType(request.getType());
+        room.setPricePerNight(request.getPricePerNight());
+        room.setRoomNumber(request.getRoomNumber());
+
+        Hotel hotel=hotelRepository.findById(request.getHotelId())
+                .orElseThrow(()->  new HotelNotFound("Hotel not found"));
+        room.setHotel(hotel);
+
+        Room updatedRoom=roomRepository.save(room);
+
+        return RoomMapper.toResponse(updatedRoom);
+    }
+
+    @Transactional
     public void delete(Long id){
         if(!roomRepository.existsById(id)){
             throw new RoomNotFound("Room not found");
