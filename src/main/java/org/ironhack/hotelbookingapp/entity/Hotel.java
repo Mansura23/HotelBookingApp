@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="hotels")
 public class Hotel {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -18,7 +19,14 @@ public class Hotel {
 
     private String name;
 
+    private String description;
+
     private String country;
+
+    @Column(name="zip_code")
+    private String zipCode;
+
+    private String phone;
 
     private String city;
 
@@ -26,6 +34,6 @@ public class Hotel {
 
     private double rating;
 
-    @OneToMany(mappedBy="hotel")
+    @OneToMany(mappedBy="hotel", cascade=CascadeType.ALL,orphanRemoval=true)
     private List<Room> rooms;
 }
