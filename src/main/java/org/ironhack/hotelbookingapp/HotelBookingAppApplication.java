@@ -8,6 +8,7 @@ public class HotelBookingAppApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(HotelBookingAppApplication.class, args);
+        System.out.println("Hotel booking app has been started");
     }
 
 }
