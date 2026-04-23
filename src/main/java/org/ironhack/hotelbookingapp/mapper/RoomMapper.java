@@ -1,11 +1,10 @@
 package org.ironhack.hotelbookingapp.mapper;
 
-import org.ironhack.hotelbookingapp.dto.RoomRequestDto;
-import org.ironhack.hotelbookingapp.dto.RoomResponseDto;
+import org.ironhack.hotelbookingapp.dto.request.RoomRequestDto;
+import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.entity.Room;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoomMapper {

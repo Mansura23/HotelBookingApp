@@ -1,8 +1,8 @@
 package org.ironhack.hotelbookingapp.service;
 
-import org.ironhack.hotelbookingapp.dto.RoomRequestDto;
-import org.ironhack.hotelbookingapp.dto.RoomRequestUpdateDto;
-import org.ironhack.hotelbookingapp.dto.RoomResponseDto;
+import org.ironhack.hotelbookingapp.dto.request.RoomRequestDto;
+import org.ironhack.hotelbookingapp.dto.request.RoomRequestUpdateDto;
+import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.entity.Room;
 import org.ironhack.hotelbookingapp.exception.HotelNotFound;
@@ -10,7 +10,6 @@ import org.ironhack.hotelbookingapp.exception.RoomNotFound;
 import org.ironhack.hotelbookingapp.mapper.RoomMapper;
 import org.ironhack.hotelbookingapp.repository.HotelRepository;
 import org.ironhack.hotelbookingapp.repository.RoomRepository;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

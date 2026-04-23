@@ -1,4 +1,4 @@
-package org.ironhack.hotelbookingapp.dto;
+package org.ironhack.hotelbookingapp.dto.request;
 
 
 import jakarta.validation.constraints.DecimalMin;
