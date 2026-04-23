@@ -1,4 +1,4 @@
-package org.ironhack.hotelbookingapp.dto;
+package org.ironhack.hotelbookingapp.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
