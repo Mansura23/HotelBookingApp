@@ -1,10 +1,9 @@
 package org.ironhack.hotelbookingapp.controller;
 
 import jakarta.validation.Valid;
-import org.ironhack.hotelbookingapp.dto.RoomRequestDto;
-import org.ironhack.hotelbookingapp.dto.RoomRequestUpdateDto;
-import org.ironhack.hotelbookingapp.dto.RoomResponseDto;
-import org.ironhack.hotelbookingapp.repository.RoomRepository;
+import org.ironhack.hotelbookingapp.dto.request.RoomRequestDto;
+import org.ironhack.hotelbookingapp.dto.request.RoomRequestUpdateDto;
+import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;
 import org.ironhack.hotelbookingapp.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

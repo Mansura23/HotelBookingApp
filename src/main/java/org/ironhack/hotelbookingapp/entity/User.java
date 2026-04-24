@@ -18,9 +18,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(nullable = false, length = 50)
+    private String firstName;
 
+    @Column(nullable = false, length = 50)
+    private String lastName;
+
+    @Column(nullable = false, length = 50, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String number;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
