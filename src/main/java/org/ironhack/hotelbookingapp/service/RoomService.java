@@ -28,7 +28,7 @@ public class RoomService {
 
     public RoomResponseDto findById(Long id){
         Room room=roomRepository.findById(id)
-                .orElseThrow(()->  new RoomNotFound("Room not found"));
+                .orElseThrow(()->  new RoomNotFound("Room",id));
 
         return RoomMapper.toResponse(room);
     }
@@ -41,7 +41,7 @@ public class RoomService {
 
     public RoomResponseDto create(RoomRequestDto request){
         Hotel hotel=hotelRepository.findById(request.getHotelId())
-                .orElseThrow(()->  new HotelNotFound("Hotel not found"));
+                .orElseThrow(()->  new HotelNotFound("Hotel",request.getHotelId()));
 
         Room room=RoomMapper.toEntity(request,hotel);
 
@@ -53,11 +53,11 @@ public class RoomService {
     @Transactional
     public RoomResponseDto update(Long id,RoomRequestUpdateDto request){
         Room room=roomRepository.findById(id)
-                .orElseThrow(()->new RoomNotFound("Room not found"));
+                .orElseThrow(()->new RoomNotFound("Room",id));
 
         if(request.getHotelId()!=null){
             Hotel hotel=hotelRepository.findById(request.getHotelId())
-                    .orElseThrow(()->  new HotelNotFound("Hotel not found"));
+                    .orElseThrow(()->  new HotelNotFound("Hotel",id));
 
             room.setHotel(hotel);
         }
@@ -83,14 +83,14 @@ public class RoomService {
     @Transactional
     public RoomResponseDto updateFull(Long id,RoomRequestDto request){
         Room room=roomRepository.findById(id)
-                .orElseThrow(()->new RoomNotFound("Room not found"));
+                .orElseThrow(()->new RoomNotFound("Room",id));
 
         room.setType(request.getType());
         room.setPricePerNight(request.getPricePerNight());
         room.setRoomNumber(request.getRoomNumber());
 
         Hotel hotel=hotelRepository.findById(request.getHotelId())
-                .orElseThrow(()->  new HotelNotFound("Hotel not found"));
+                .orElseThrow(()->  new HotelNotFound("Hotel",id));
         room.setHotel(hotel);
 
         Room updatedRoom=roomRepository.save(room);
@@ -101,7 +101,7 @@ public class RoomService {
     @Transactional
     public void delete(Long id){
         if(!roomRepository.existsById(id)){
-            throw new RoomNotFound("Room not found");
+            throw new RoomNotFound("Room",id);
         }
 
         roomRepository.deleteById(id);
