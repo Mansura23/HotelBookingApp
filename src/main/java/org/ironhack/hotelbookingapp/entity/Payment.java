@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ironhack.hotelbookingapp.enums.Currency;
 import org.ironhack.hotelbookingapp.enums.PaymentMethod;
 import org.ironhack.hotelbookingapp.enums.PaymentStatus;
 import java.math.BigDecimal;
@@ -32,6 +33,9 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
 
     @Column(name="paid_at")
     private LocalDateTime paidAt;
