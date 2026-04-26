@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.ironhack.hotelbookingapp.enums.PaymentMethod;
 import org.ironhack.hotelbookingapp.enums.PaymentStatus;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ public class Payment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="booking_id")
+    @JoinColumn(name="booking_id",nullable = false)
     private Booking booking;
 
     @Column(nullable = false, precision = 10, scale = 2)
@@ -42,5 +41,16 @@ public class Payment {
 
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }
