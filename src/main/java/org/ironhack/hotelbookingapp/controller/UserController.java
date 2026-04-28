@@ -29,11 +29,7 @@ public class UserController {
                                     @RequestBody UpdateUserRequestDto dto) {
         return userService.updateMe(id, dto);
     }
-    @PutMapping("{id}/balance")
-    public UserResponseDto addBalance(@PathVariable Long id,
-                                      @RequestParam BigDecimal balance) {
-        return userService.addBalance(id, balance);
-    }
+
 
 
 
