@@ -9,19 +9,19 @@ import java.math.BigDecimal;
 
 @Data
 public class RoomRequestDto {
-    @NotBlank
+    @NotBlank(message = "RoomNumber should not be empty")
     @Size(min = 1, max = 50)
     private String roomNumber;
 
     @DecimalMin("0.01")
     @Digits(integer = 6, fraction = 2)
-    @NotNull
+    @NotNull(message = "Price should not be null")
     private BigDecimal pricePerNight;
 
-    @NotNull
+    @NotNull(message = "Type must not be null")
     private RoomType type;
 
-    @NotNull
+    @NotNull(message = "HotelId must nor be null")
     private Long hotelId;
 
 
