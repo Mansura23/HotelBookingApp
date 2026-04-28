@@ -28,8 +28,7 @@ public class UserRequestDto {
     @NotBlank(message = "Password is required")
     private String password;
 
-    @NotBlank
-    private BigDecimal  balance;
+
 
 
 }
