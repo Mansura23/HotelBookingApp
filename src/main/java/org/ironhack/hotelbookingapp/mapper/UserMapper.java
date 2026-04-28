@@ -8,6 +8,8 @@ import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.enums.Role;
 import org.ironhack.hotelbookingapp.enums.Status;
 
+import java.math.BigDecimal;
+
 public class UserMapper {
 
     public static User toEntity(UserRequestDto userRequestDto) {
@@ -16,7 +18,7 @@ public class UserMapper {
         user.setLastName(userRequestDto.getLastName());
         user.setEmail(userRequestDto.getEmail());
         user.setRole(Role.USER);
-        user.setBalance(userRequestDto.getBalance());
+        user.setBalance(BigDecimal.ZERO);
         user.setNumber(userRequestDto.getNumber());
         user.setPassword(userRequestDto.getPassword());
         user.setStatus(Status.ACTIVE);
