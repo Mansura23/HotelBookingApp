@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.ironhack.hotelbookingapp.enums.Role;
+import org.ironhack.hotelbookingapp.enums.Status;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -29,6 +32,18 @@ public class User {
 
     @Column(nullable = false)
     private String number;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
