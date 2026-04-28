@@ -1,7 +1,4 @@
 package org.ironhack.hotelbookingapp.mapper;
-
-import org.ironhack.hotelbookingapp.dto.request.AdminUpdateRequestDto;
-import org.ironhack.hotelbookingapp.dto.request.UpdateUserRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
 import org.ironhack.hotelbookingapp.entity.User;
@@ -36,8 +33,7 @@ public class UserMapper {
         userResponseDto.setNumber(user.getNumber());
         userResponseDto.setStatus(user.getStatus());
         userResponseDto.setBalance(user.getBalance());
-
-
+        
         return userResponseDto;
     }
 
