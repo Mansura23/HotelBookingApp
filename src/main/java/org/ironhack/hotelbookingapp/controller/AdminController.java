@@ -5,6 +5,8 @@ import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
 import org.ironhack.hotelbookingapp.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -26,6 +28,11 @@ public class AdminController {
     @DeleteMapping("/{id}")
     UserResponseDto deleteUser(@PathVariable Long id) {
         return userService.softDeleteUserById(id);
+    }
+    @PutMapping("{id}/balance")
+    public UserResponseDto addBalance(@PathVariable Long id,
+                                      @RequestParam BigDecimal balance) {
+        return userService.addBalance(id, balance);
     }
 
 
