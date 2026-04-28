@@ -33,7 +33,7 @@ public class UserMapper {
         userResponseDto.setNumber(user.getNumber());
         userResponseDto.setStatus(user.getStatus());
         userResponseDto.setBalance(user.getBalance());
-        
+
         return userResponseDto;
     }
 
