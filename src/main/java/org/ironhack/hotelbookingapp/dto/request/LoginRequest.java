@@ -1,17 +1,16 @@
 package org.ironhack.hotelbookingapp.dto.request;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
 @Data
-public class UserRequestDto {
-    private String firstName;
-    private String lastName;
+public class LoginRequest {
     @Email(message = "Email format must be correct.")
     private String email;
-    private String number;
-    @Size(min = 6, max = 12)
+
+    @Size(min = 4, max = 20, message = "Password must be between 4 and 20 characters.")
+    @NotBlank(message = "Password is required")
     private String password;
-
-
 }

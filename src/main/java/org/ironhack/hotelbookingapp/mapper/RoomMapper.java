@@ -39,7 +39,7 @@ public class RoomMapper {
 
         return roomList
                 .stream()
-                .map(room -> toResponse(room))
+                .map(RoomMapper::toResponse)
                 .toList();
 
     }
