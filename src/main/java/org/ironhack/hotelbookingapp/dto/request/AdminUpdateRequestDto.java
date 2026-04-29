@@ -1,6 +1,4 @@
 package org.ironhack.hotelbookingapp.dto.request;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.ironhack.hotelbookingapp.enums.Role;
 import org.ironhack.hotelbookingapp.enums.Status;
