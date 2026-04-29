@@ -29,6 +29,7 @@ public class AdminController {
     UserResponseDto deleteUser(@PathVariable Long id) {
         return userService.softDeleteUserById(id);
     }
+
     @PutMapping("{id}/balance")
     public UserResponseDto addBalance(@PathVariable Long id,
                                       @RequestParam BigDecimal balance) {
