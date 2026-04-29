@@ -1,6 +1,7 @@
 package org.ironhack.hotelbookingapp.controller;
 
 import jakarta.validation.Valid;
+import org.ironhack.hotelbookingapp.dto.request.LoginRequest;
 import org.ironhack.hotelbookingapp.dto.request.UpdateUserRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
@@ -21,10 +22,17 @@ public class UserController {
         return userService.registerUser(userRequestDto);
     }
 
-    @PutMapping("/me/{id}")
-    public UserResponseDto updateMe(@PathVariable Long id,
-                                    @RequestBody UpdateUserRequestDto dto) {
-        return userService.updateMe(id, dto);
+    @PutMapping("/me")
+    public UserResponseDto updateMe(
+            @RequestBody UpdateUserRequestDto dto,
+            @RequestHeader("Authorization") String authHeader
+    ) {
+        return userService.updateMe(dto, authHeader);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return userService.loginUser(loginRequest);
     }
 
 }

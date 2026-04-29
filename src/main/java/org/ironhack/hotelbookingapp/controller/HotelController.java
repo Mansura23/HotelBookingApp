@@ -5,15 +5,16 @@ import lombok.RequiredArgsConstructor;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
-import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.service.HotelService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/hotels")
+@RequestMapping("/admin/hotels")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class HotelController {
 
