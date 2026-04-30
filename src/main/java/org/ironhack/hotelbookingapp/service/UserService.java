@@ -7,7 +7,9 @@ import org.ironhack.hotelbookingapp.dto.request.UpdateUserRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
 import org.ironhack.hotelbookingapp.entity.User;
+import org.ironhack.hotelbookingapp.entity.UserPrincipal;
 import org.ironhack.hotelbookingapp.enums.Status;
+import org.ironhack.hotelbookingapp.exception.InvalidCredantialsException;
 import org.ironhack.hotelbookingapp.exception.UserExistsException;
 import org.ironhack.hotelbookingapp.exception.UserNotActiveException;
 import org.ironhack.hotelbookingapp.exception.UserNotFoundException;
@@ -16,6 +18,7 @@ import org.ironhack.hotelbookingapp.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,10 +75,14 @@ public class UserService {
         );
 
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(request.getEmail());
+//            return jwtService.generateToken(request.getEmail());
+            User user = userRepository.findByEmail(request.getEmail());
+            UserDetails userDetails = new UserPrincipal(user);
+
+            return jwtService.generateToken(userDetails);
         }
 
-        throw new RuntimeException("Invalid credentials");
+        throw new InvalidCredantialsException("Invalid credentials");
     }
     @Transactional
     public  User findById(Long id) {
