@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -19,14 +21,32 @@ public class JWTService {
     @Value("${jwt.secret}")
     private String secretkey;
 
-    public String generateToken(String email) {
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("role", userDetails.getAuthorities()
+                .iterator().next().getAuthority());
+
         return Jwts.builder()
-                .subject(email)
+                .claims(claims)
+                .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 30)) // FIX
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 30))
                 .signWith(getKey())
                 .compact();
     }
+
+//    public String generateToken(String email) {
+//        return Jwts.builder()
+//                .subject(email)
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 30)) // FIX
+//                .signWith(getKey())
+//                .compact();
+//    }
+
+
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
