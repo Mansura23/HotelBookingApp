@@ -72,6 +72,48 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleNotUserNotFound(UserNotFoundException ex, HttpServletRequest request){
+        ErrorResponseDto response=new ErrorResponseDto(
+                HttpStatus.NOT_FOUND.value(),
+                "User not found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserNotActiveException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotActive(UserNotActiveException ex, HttpServletRequest request){
+        ErrorResponseDto response=new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "User not active",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UserExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserExists(UserExistsException ex, HttpServletRequest request){
+        ErrorResponseDto response=new ErrorResponseDto(
+                HttpStatus.BAD_REQUEST.value(),
+                "User already exists",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+
+
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGeneral(Exception ex,HttpServletRequest request){
