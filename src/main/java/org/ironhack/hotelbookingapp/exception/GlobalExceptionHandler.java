@@ -190,4 +190,30 @@ public class GlobalExceptionHandler {
 
         return  ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
+
+    @ExceptionHandler(BookingNotFound.class)
+    public ResponseEntity<ErrorResponseDto> handleBookingNotFound(BookingNotFound ex, HttpServletRequest request){
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                HttpStatus.NOT_FOUND.value(),
+                "Booking not found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(HotelExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleHotelExists(HotelExistsException ex, HttpServletRequest request){
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                HttpStatus.CONFLICT.value(),
+                "Hotel already exists.",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+
+        return  ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 }
