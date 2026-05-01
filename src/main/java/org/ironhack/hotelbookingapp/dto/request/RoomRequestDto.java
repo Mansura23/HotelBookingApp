@@ -1,6 +1,7 @@
 package org.ironhack.hotelbookingapp.dto.request;
 
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.ironhack.hotelbookingapp.enums.RoomType;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 public class RoomRequestDto {
     @NotBlank(message = "RoomNumber should not be empty")
     @Size(min = 1, max = 50)
+    @Column(unique=true)
     private String roomNumber;
 
     @DecimalMin("0.01")

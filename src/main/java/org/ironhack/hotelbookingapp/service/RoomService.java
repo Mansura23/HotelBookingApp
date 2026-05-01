@@ -6,6 +6,7 @@ import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.entity.Room;
 import org.ironhack.hotelbookingapp.exception.HotelNotFound;
+import org.ironhack.hotelbookingapp.exception.RoomExistsException;
 import org.ironhack.hotelbookingapp.exception.RoomNotFound;
 import org.ironhack.hotelbookingapp.mapper.RoomMapper;
 import org.ironhack.hotelbookingapp.repository.HotelRepository;
@@ -42,6 +43,10 @@ public class RoomService {
     public RoomResponseDto create(RoomRequestDto request){
         Hotel hotel=hotelRepository.findById(request.getHotelId())
                 .orElseThrow(()->  new HotelNotFound("Hotel",request.getHotelId()));
+
+        if(roomRepository.existsByRoomNumber(request.getRoomNumber())){
+            throw new RoomExistsException("Room number already exists");
+        }
 
         Room room=RoomMapper.toEntity(request,hotel);
 

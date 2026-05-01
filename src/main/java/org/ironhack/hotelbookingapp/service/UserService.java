@@ -17,6 +17,7 @@ import org.ironhack.hotelbookingapp.exception.UserNotFoundException;
 import org.ironhack.hotelbookingapp.mapper.UserMapper;
 import org.ironhack.hotelbookingapp.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,22 +72,22 @@ public class UserService {
 
     public String loginUser(LoginRequest request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
 
-        if (authentication.isAuthenticated()) {
-//            return jwtService.generateToken(request.getEmail());
             User user = userRepository.findByEmail(request.getEmail());
             UserDetails userDetails = new UserPrincipal(user);
 
             return jwtService.generateToken(userDetails);
-        }
 
-        throw new InvalidCredantialsException("Invalid credentials");
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredantialsException("Invalid credentials");
+        }
     }
     @Transactional
     public  User findById(Long id) {

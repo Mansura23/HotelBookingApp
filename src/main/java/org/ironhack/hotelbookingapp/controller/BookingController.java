@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.ironhack.hotelbookingapp.dto.request.BookingRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
 import org.ironhack.hotelbookingapp.service.BookingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,7 +21,9 @@ public class BookingController {
     }
 
     @DeleteMapping("/{id}")
-    public void cancel(@PathVariable Long id) {
+    public ResponseEntity<Void> cancel(@PathVariable Long id) {
         bookingService.cancel(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
