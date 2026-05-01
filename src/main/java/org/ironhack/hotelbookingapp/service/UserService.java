@@ -6,6 +6,7 @@ import org.ironhack.hotelbookingapp.dto.request.LoginRequest;
 import org.ironhack.hotelbookingapp.dto.request.UpdateUserRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
+import org.ironhack.hotelbookingapp.dto.response.UserResponseForBooking;
 import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.entity.UserPrincipal;
 import org.ironhack.hotelbookingapp.enums.Status;
@@ -18,7 +19,9 @@ import org.ironhack.hotelbookingapp.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -170,12 +173,27 @@ public class UserService {
         return UserMapper.userToUserResponseDto(user);
     }
 
-    public List<UserResponseDto> getAllUsers() {
+    public List<UserResponseForBooking> getAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(UserMapper::userToUserResponseDto)
+                .map(UserMapper::toResponseDtoForBooking)
                 .toList();
     }
+
+    public UserResponseForBooking getMyProfile() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return UserMapper.toResponseDtoForBooking(user);
+    }
+
+
 
 
 }
