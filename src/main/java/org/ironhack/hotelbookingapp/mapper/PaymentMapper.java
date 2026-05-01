@@ -8,11 +8,10 @@ import org.ironhack.hotelbookingapp.enums.Currency;
 import org.ironhack.hotelbookingapp.enums.PaymentStatus;
 
 public class PaymentMapper {
-    public Payment toEntity(PaymentRequestDto request, Booking booking) {
+    public static Payment toEntity(PaymentRequestDto request, Booking booking) {
         Payment payment = new Payment();
 
         payment.setPaymentMethod(request.getPaymentMethod());
-        payment.setAmount(request.getAmount());
         payment.setBooking(booking);
         payment.setStatus(PaymentStatus.PENDING);
         payment.setCurrency(Currency.AZN);
@@ -20,7 +19,7 @@ public class PaymentMapper {
         return payment;
     }
 
-    public PaymentResponseDto toDto(Payment payment) {
+    public  static PaymentResponseDto toDto(Payment payment) {
         return new PaymentResponseDto(
                 payment.getId(),
                 payment.getBooking().getId(),
