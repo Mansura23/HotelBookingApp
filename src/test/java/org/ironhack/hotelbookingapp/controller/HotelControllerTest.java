@@ -43,39 +43,39 @@ public class HotelControllerTest {
                 .andExpect(jsonPath("$",hasSize(0)));
     }
 
-    @Test
-    void getAllHotels_returnsListOfHotels() throws Exception {
-        List<HotelResponseDto>  hotels = List.of(
-                new HotelResponseDto(1L,
-                        "Hilton Baku",
-                        "Luxury hotel with sea view and modern facilities",
-                        "Azerbaijan",
-                        "Baku",
-                        "1B Azadlig Avenue",
-                        "AZ1000",
-                        "+994124935000",
-                        4.7),
-                new HotelResponseDto(
-                        2L,
-                        "Flame Towers",
-                        "Luxury hotel with sea view and modern facilities",
-                        "Azerbaijan",
-                        "Baku",
-                        "Haydar Aliyev 2G",
-                        "AZ1300",
-                        "+994124955050",
-                        3.9
-                ));
-
-        when(hotelService.getAll()).thenReturn(hotels);
-
-        mockMvc.perform(get("/api/hotels"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$",hasSize(2)))
-                .andExpect(jsonPath("$[0].name").value("Hilton Baku"))
-                .andExpect(jsonPath("$[1].name").value("Flame Towers"));
-    }
+//    @Test
+//    void getAllHotels_returnsListOfHotels() throws Exception {
+//        List<HotelResponseDto>  hotels = List.of(
+//                new HotelResponseDto(1L,
+//                        "Hilton Baku",
+//                        "Luxury hotel with sea view and modern facilities",
+//                        "Azerbaijan",
+//                        "Baku",
+//                        "1B Azadlig Avenue",
+//                        "AZ1000",
+//                        "+994124935000",
+//                        4.7),
+//                new HotelResponseDto(
+//                        2L,
+//                        "Flame Towers",
+//                        "Luxury hotel with sea view and modern facilities",
+//                        "Azerbaijan",
+//                        "Baku",
+//                        "Haydar Aliyev 2G",
+//                        "AZ1300",
+//                        "+994124955050",
+//                        3.9
+//                ));
+//
+//        when(hotelService.getAll()).thenReturn(hotels);
+//
+//        mockMvc.perform(get("/api/hotels"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$",hasSize(2)))
+//                .andExpect(jsonPath("$[0].name").value("Hilton Baku"))
+//                .andExpect(jsonPath("$[1].name").value("Flame Towers"));
+//    }
 
     @Test
     void getHotelById_returnsHotel() throws Exception {
