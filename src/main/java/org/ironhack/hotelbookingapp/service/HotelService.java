@@ -74,4 +74,10 @@ public class HotelService {
         Hotel hotel = findByIdOrThrow(id);
         hotelRepository.delete(hotel);
     }
+
+    public List<HotelResponseDtoForUser>  findHotelsByCity(String city){
+        List<Hotel> hotels=hotelRepository.findByCity(city);
+
+        return HotelMapper.toResponseList(hotels);
+    }
 }

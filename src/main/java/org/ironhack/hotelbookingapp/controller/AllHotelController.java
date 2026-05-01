@@ -4,6 +4,7 @@ import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
 import org.ironhack.hotelbookingapp.service.HotelService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,5 +23,8 @@ public class AllHotelController {
         return hotelService.getAll();
     }
 
-
+    @GetMapping("/city")
+    public List<HotelResponseDtoForUser> getHotelsByCity(@RequestParam String city) {
+        return hotelService.findHotelsByCity(city);
+    }
 }
