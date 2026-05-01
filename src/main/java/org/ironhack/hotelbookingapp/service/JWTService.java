@@ -20,6 +20,8 @@ public class JWTService {
 
     @Value("${jwt.secret}")
     private String secretkey;
+    @Value("${jwt.expiration-ms}")
+    private long jwtExpiration;
 
 
     public String generateToken(UserDetails userDetails) {
@@ -32,7 +34,7 @@ public class JWTService {
                 .claims(claims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getKey())
                 .compact();
     }
