@@ -3,6 +3,7 @@ package org.ironhack.hotelbookingapp.mapper;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
+import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 
 import java.util.List;
@@ -45,7 +46,24 @@ public class HotelMapper {
         );
     }
 
-    public static List<HotelResponseDto> toResponseList(List<Hotel> hotels) {
-        return hotels.stream().map(HotelMapper::toResponseDto).collect(Collectors.toList());
+    public static List<HotelResponseDtoForUser> toResponseList(List<Hotel> hotels) {
+        return hotels.stream().map(HotelMapper::toResponseDtoForUser).collect(Collectors.toList());
     }
+    public  static HotelResponseDtoForUser  toResponseDtoForUser(Hotel hotel) {
+        HotelResponseDtoForUser responseDto = new HotelResponseDtoForUser();
+        responseDto.setId(hotel.getId());
+        responseDto.setName(hotel.getName());
+        responseDto.setCountry(hotel.getCountry());
+        responseDto.setCity(hotel.getCity());
+        responseDto.setDescription(hotel.getDescription());
+        responseDto.setAddress(hotel.getAddress());
+        responseDto.setZipCode(hotel.getZipCode());
+        responseDto.setPhone(hotel.getPhone());
+        responseDto.setRating(hotel.getRating());
+        responseDto.setRooms(hotel.getRooms());
+        return responseDto;
+
+    }
+
+
 }

@@ -5,6 +5,7 @@ import org.ironhack.hotelbookingapp.dto.request.LoginRequest;
 import org.ironhack.hotelbookingapp.dto.request.UpdateUserRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
+import org.ironhack.hotelbookingapp.dto.response.UserResponseForBooking;
 import org.ironhack.hotelbookingapp.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,11 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
         return userService.loginUser(loginRequest);
+    }
+
+    @GetMapping("/me")
+    public UserResponseForBooking getMyProfile() {
+        return userService.getMyProfile();
     }
 
 }

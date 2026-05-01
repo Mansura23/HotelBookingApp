@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,5 +36,6 @@ public class Hotel {
     private double rating;
 
     @OneToMany(mappedBy="hotel", cascade=CascadeType.ALL,orphanRemoval=true)
+    @JsonIgnore
     private List<Room> rooms;
 }
