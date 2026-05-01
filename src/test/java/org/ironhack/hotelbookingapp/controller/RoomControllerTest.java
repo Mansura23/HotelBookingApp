@@ -39,7 +39,7 @@ public class RoomControllerTest {
     void getAllRooms_emptyList_returnsEmptyArray() throws Exception {
         when(roomService.findAll()).thenReturn(List.of());
 
-        mockMvc.perform(get("/api/rooms"))
+        mockMvc.perform(get("/admin/rooms"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
