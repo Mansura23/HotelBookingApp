@@ -18,6 +18,6 @@ public class HotelResponseDtoForUser {
     private String city;
     private String address;
     private double rating;
-    private List<Room> rooms;
+    private List<RoomResponseDto> rooms;
 
 }
