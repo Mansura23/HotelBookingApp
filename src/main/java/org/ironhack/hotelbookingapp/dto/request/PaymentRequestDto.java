@@ -15,8 +15,6 @@ public class PaymentRequestDto {
 
     @DecimalMin("0.01")
     @Digits(integer = 6, fraction = 2)
-    @NotNull
-    private BigDecimal amount;
 
     @NotNull
     private PaymentMethod paymentMethod;

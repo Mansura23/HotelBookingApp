@@ -3,7 +3,9 @@ package org.ironhack.hotelbookingapp.service;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
+import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
 import org.ironhack.hotelbookingapp.entity.Hotel;
+import org.ironhack.hotelbookingapp.exception.HotelExistsException;
 import org.ironhack.hotelbookingapp.exception.HotelNotFound;
 import org.ironhack.hotelbookingapp.mapper.HotelMapper;
 import org.ironhack.hotelbookingapp.repository.HotelRepository;
@@ -27,6 +29,9 @@ public class HotelService {
 
     public HotelResponseDto create(HotelRequestDto requestDto) {
         Hotel hotel = HotelMapper.toModel(requestDto);
+        if(hotelRepository.existsByName(requestDto.getName())) {
+            throw new HotelExistsException("Hotel with id " + hotel.getId() + " already exists");
+        }
         Hotel savedHotel = hotelRepository.save(hotel);
         return HotelMapper.toResponseDto(savedHotel);
     }
@@ -61,7 +66,7 @@ public class HotelService {
         return HotelMapper.toResponseDto(hotel);
     }
 
-    public List<HotelResponseDto> getAll(){
+    public List<HotelResponseDtoForUser> getAll(){
         return HotelMapper.toResponseList(hotelRepository.findAll());
     }
 
