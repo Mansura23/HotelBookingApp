@@ -93,7 +93,6 @@ public class UserService {
        return userRepository.findById(id)
                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
-
     // USER
     public UserResponseDto updateMe(UpdateUserRequestDto dto, String authHeader) {
 

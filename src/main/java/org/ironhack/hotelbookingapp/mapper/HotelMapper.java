@@ -2,8 +2,10 @@ package org.ironhack.hotelbookingapp.mapper;
 
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
+import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
+import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;
 import org.ironhack.hotelbookingapp.entity.Hotel;
 
 import java.util.List;
@@ -60,7 +62,12 @@ public class HotelMapper {
         responseDto.setZipCode(hotel.getZipCode());
         responseDto.setPhone(hotel.getPhone());
         responseDto.setRating(hotel.getRating());
-        responseDto.setRooms(hotel.getRooms());
+        List<RoomResponseDto> roomsDtos =
+                hotel.getRooms()
+                        .stream()
+                        .map(RoomMapper::toResponse)
+                        .toList();
+        responseDto.setRooms(roomsDtos);
         return responseDto;
 
     }

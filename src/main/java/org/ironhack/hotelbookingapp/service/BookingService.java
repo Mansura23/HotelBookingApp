@@ -44,6 +44,7 @@ public class BookingService {
         if(user==null){
             throw new UsernameNotFoundException("User not found");
         }
+        /// //
         if (user.getStatus() != Status.ACTIVE) {
             throw new UserNotActiveException("User is not active");
         }
@@ -158,13 +159,13 @@ public class BookingService {
         User user = userRepository.findByEmail(email);
 
         Booking booking = bookingRepository.findByIdAndUser(id, user)
-                .orElseThrow(() -> new RuntimeException("Not your booking"));
+                .orElseThrow(() -> new BookingNotFound("Not your booking"));
 
         if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
             throw new RuntimeException("Already cancelled");
         }
 
-        // PENDING → sadəcə cancel
+        // PENDING →  cancel
         if (booking.getBookingStatus() == BookingStatus.PENDING) {
             booking.setBookingStatus(BookingStatus.CANCELLED);
             bookingRepository.save(booking);
@@ -173,10 +174,10 @@ public class BookingService {
 
         // CONFIRMED → refund check
         if (LocalDate.now().plusDays(1).isAfter(booking.getCheckInDate())) {
-            throw new RuntimeException("Too late to cancel");
+            throw new CanNotCancelledException("Too late to cancel");
         }
 
-        // 💰 refund
+        //  refund
         paymentService.refund(booking);
 
         booking.setBookingStatus(BookingStatus.CANCELLED);
