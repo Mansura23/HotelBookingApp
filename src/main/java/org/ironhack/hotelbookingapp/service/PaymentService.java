@@ -8,6 +8,9 @@ import org.ironhack.hotelbookingapp.entity.Payment;
 import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.enums.BookingStatus;
 import org.ironhack.hotelbookingapp.enums.PaymentStatus;
+import org.ironhack.hotelbookingapp.exception.BookingNotFound;
+import org.ironhack.hotelbookingapp.exception.BookingPayedException;
+import org.ironhack.hotelbookingapp.exception.InsufficientBalanceException;
 import org.ironhack.hotelbookingapp.mapper.PaymentMapper;
 import org.ironhack.hotelbookingapp.repository.BookingRepository;
 import org.ironhack.hotelbookingapp.repository.PaymentRepository;
@@ -37,16 +40,16 @@ public class PaymentService {
         User user = userRepository.findByEmail(email);
 
         Booking booking = bookingRepository.findByIdAndUser(dto.getBookingId(), user)
-                .orElseThrow(() -> new RuntimeException("Booking not yours"));
+                .orElseThrow(() -> new BookingNotFound("Booking not yours"));
 
         if (booking.getBookingStatus() == BookingStatus.CONFIRMED) {
-            throw new RuntimeException("Already paid");
+            throw new BookingPayedException("Already paid");
         }
 
         BigDecimal amount = booking.getTotalPrice();
 
         if (user.getBalance().compareTo(amount) < 0) {
-            throw new RuntimeException("Insufficient balance");
+            throw new InsufficientBalanceException("Insufficient balance");
         }
 
         user.setBalance(user.getBalance().subtract(amount));
