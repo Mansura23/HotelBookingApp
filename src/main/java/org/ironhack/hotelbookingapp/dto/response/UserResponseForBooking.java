@@ -1,7 +1,6 @@
 package org.ironhack.hotelbookingapp.dto.response;
 
 import lombok.Data;
-import org.ironhack.hotelbookingapp.entity.Booking;
 import org.ironhack.hotelbookingapp.enums.Role;
 import org.ironhack.hotelbookingapp.enums.Status;
 
