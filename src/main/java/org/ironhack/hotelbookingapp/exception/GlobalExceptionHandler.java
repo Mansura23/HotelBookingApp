@@ -113,18 +113,6 @@ public class GlobalExceptionHandler {
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(InvalidCredantialsException.class)
-    public ResponseEntity<ErrorResponseDto> handleInvalidCredentials(InvalidCredantialsException ex,HttpServletRequest request){
-        ErrorResponseDto response = new ErrorResponseDto(
-                HttpStatus.UNAUTHORIZED.value(),
-                "Invalid credentials.",
-                ex.getMessage(),
-                request.getRequestURI(),
-                LocalDateTime.now()
-        );
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-    }
 
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<ErrorResponseDto> handleInvalidDate(InvalidDateException ex,HttpServletRequest request){
@@ -165,18 +153,7 @@ public class GlobalExceptionHandler {
         return  ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex, HttpServletRequest request){
-        ErrorResponseDto errorResponse = new ErrorResponseDto(
-                HttpStatus.NOT_FOUND.value(),
-                "User not found",
-                ex.getMessage(),
-                request.getRequestURI(),
-                LocalDateTime.now()
-        );
 
-        return   ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
 
     @ExceptionHandler(UserNotActiveException.class)
     public ResponseEntity<ErrorResponseDto> handleUserNotActiveException(UserNotActiveException ex, HttpServletRequest request){
@@ -251,5 +228,41 @@ public class GlobalExceptionHandler {
         );
 
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+    @ExceptionHandler({org.ironhack.hotelbookingapp.exception.InvalidCredantialsException.class,
+            org.springframework.security.authentication.BadCredentialsException.class})
+    public ResponseEntity<ErrorResponseDto> handleInvalidCredentials(Exception ex, HttpServletRequest request) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                HttpStatus.UNAUTHORIZED.value(),
+                "Unauthorized",
+                "Invalid email or password",
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDto> handleAccessDeniedException(Exception ex, HttpServletRequest request) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                HttpStatus.FORBIDDEN.value(),
+                "Access Denied",
+                "You do not have permission to access this resource. Admin role required.",
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
+
+    @ExceptionHandler(org.ironhack.hotelbookingapp.exception.UserNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFound(Exception ex, HttpServletRequest request) {
+        ErrorResponseDto errorResponse = new ErrorResponseDto(
+                HttpStatus.NOT_FOUND.value(),
+                "User Not Found",
+                ex.getMessage(),
+                request.getRequestURI(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 }
