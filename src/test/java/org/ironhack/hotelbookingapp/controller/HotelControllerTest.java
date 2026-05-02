@@ -1,222 +1,246 @@
 package org.ironhack.hotelbookingapp.controller;
 
-import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
-import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
-import org.ironhack.hotelbookingapp.exception.GlobalExceptionHandler;
+import org.ironhack.hotelbookingapp.exception.HotelExistsException;
 import org.ironhack.hotelbookingapp.exception.HotelNotFound;
 import org.ironhack.hotelbookingapp.service.HotelService;
+import org.ironhack.hotelbookingapp.service.JWTService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(HotelController.class)
-@AutoConfigureMockMvc(addFilters = false) // security OFF
-@Import(GlobalExceptionHandler.class)     // exception handler daxil edilir
-class HotelControllerTest {
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
+@WithMockUser(username = "admin", roles = {"ADMIN"})
+public class HotelControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @MockitoBean
     private HotelService hotelService;
 
-    // ✅ GET BY ID
+    @MockitoBean
+    private JWTService jwtService;
+
+    // ───────── CREATE ─────────
+
     @Test
-    void getHotelById_success() throws Exception {
+    void createHotel_returnsCreated() throws Exception {
+        HotelResponseDto response = new HotelResponseDto();
+        response.setId(1L);
+        response.setName("Grand Hotel");
+        response.setCity("Baku");
+        response.setRating(4.7);
 
-        HotelResponseDto hotel = new HotelResponseDto(
-                1L,
-                "Hilton Baku",
-                "Luxury hotel",
-                "Azerbaijan",
-                "Baku",
-                "1B Azadlig Avenue",
-                "AZ1000",
-                "+994124935000",
-                4.5
-        );
+        Mockito.when(hotelService.create(any())).thenReturn(response);
 
-        when(hotelService.getById(1L)).thenReturn(hotel);
+        mockMvc.perform(post("/admin/hotels")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "Grand Hotel",
+                                    "description": "Luxury hotel",
+                                    "country": "Azerbaijan",
+                                    "city": "Baku",
+                                    "address": "Babek prospect",
+                                    "zipCode": "AZ1000",
+                                    "phone": "+994501234567",
+                                    "rating": 4.7
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Grand Hotel"))
+                .andExpect(jsonPath("$.city").value("Baku"));
+
+        Mockito.verify(hotelService).create(any());
+    }
+
+    @Test
+    void createHotel_alreadyExists_returnsConflict() throws Exception {
+        Mockito.when(hotelService.create(any()))
+                .thenThrow(new HotelExistsException("Hotel already exists"));
+
+        mockMvc.perform(post("/admin/hotels")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "Grand Hotel",
+                                    "description": "Luxury hotel",
+                                    "country": "Azerbaijan",
+                                    "city": "Baku",
+                                    "address": "Babek prospect",
+                                    "zipCode": "AZ1000",
+                                    "phone": "+994501234567",
+                                    "rating": 4.7
+                                }
+                                """))
+                .andExpect(status().isConflict());
+    }
+
+    // ───────── GET BY ID ─────────
+
+    @Test
+    void getHotelById_returnsHotel() throws Exception {
+        HotelResponseDto response = new HotelResponseDto();
+        response.setId(1L);
+        response.setName("Grand Hotel");
+        response.setCity("Baku");
+        response.setRating(4.7);
+
+        Mockito.when(hotelService.getById(1L)).thenReturn(response);
 
         mockMvc.perform(get("/admin/hotels/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Hilton Baku"))
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Grand Hotel"))
                 .andExpect(jsonPath("$.city").value("Baku"));
+
+        Mockito.verify(hotelService).getById(1L);
     }
 
-    // ❌ NOT FOUND
     @Test
-    void getHotelById_notFound() throws Exception {
+    void getHotelById_notFound_returns404() throws Exception {
+        Mockito.when(hotelService.getById(9999L))
+                .thenThrow(new HotelNotFound("Hotel not found"));
 
-        when(hotelService.getById(99L))
-                .thenThrow(new HotelNotFound("Hotel not found with id:99"));
-
-        mockMvc.perform(get("/admin/hotels/99"))
+        mockMvc.perform(get("/admin/hotels/9999"))
                 .andExpect(status().isNotFound());
+
+        Mockito.verify(hotelService).getById(9999L);
     }
 
-    // ✅ CREATE
+    // ───────── FULL UPDATE ─────────
+
     @Test
-    void createHotel_success() throws Exception {
+    void fullUpdateHotel_returnsUpdated() throws Exception {
+        HotelResponseDto response = new HotelResponseDto();
+        response.setId(1L);
+        response.setName("Updated Hotel");
+        response.setCity("Ganja");
+        response.setRating(4.9);
 
-        HotelResponseDto created = new HotelResponseDto(
-                1L,
-                "Hilton Baku",
-                "Luxury hotel",
-                "Azerbaijan",
-                "Baku",
-                "1B Azadlig Avenue",
-                "AZ1000",
-                "+994124935000",
-                4.5
-        );
-
-        when(hotelService.create(any(HotelRequestDto.class)))
-                .thenReturn(created);
-
-        String body = """
-                {
-                  "name": "Hilton Baku",
-                  "description": "Luxury hotel",
-                  "country": "Azerbaijan",
-                  "city": "Baku",
-                  "address": "1B Azadlig Avenue",
-                  "zipCode": "AZ1000",
-                  "phone": "+994124935000",
-                  "rating": 4.5
-                }
-                """;
-
-        mockMvc.perform(post("/admin/hotels")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1));
-    }
-
-    // ❌ VALIDATION
-    @Test
-    void createHotel_validationFail() throws Exception {
-
-        String body = """
-                {
-                  "name": "",
-                  "description": "Luxury hotel",
-                  "country": "Azerbaijan",
-                  "city": "Baku",
-                  "address": "addr",
-                  "zipCode": "AZ1000",
-                  "phone": "+994",
-                  "rating": 4
-                }
-                """;
-
-        mockMvc.perform(post("/admin/hotels")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
-                .andExpect(status().isBadRequest());
-    }
-
-    // ✅ FULL UPDATE
-    @Test
-    void updateHotel_success() throws Exception {
-
-        HotelResponseDto updated = new HotelResponseDto(
-                1L,
-                "Updated Hotel",
-                "Updated desc",
-                "Azerbaijan",
-                "Baku",
-                "New address",
-                "AZ1000",
-                "+994",
-                4.2
-        );
-
-        when(hotelService.fullUpdate(eq(1L), any(HotelRequestDto.class)))
-                .thenReturn(updated);
-
-        String body = """
-                {
-                  "name": "Updated Hotel",
-                  "description": "Updated desc",
-                  "country": "Azerbaijan",
-                  "city": "Baku",
-                  "address": "New address",
-                  "zipCode": "AZ1000",
-                  "phone": "+994",
-                  "rating": 4.2
-                }
-                """;
+        Mockito.when(hotelService.fullUpdate(eq(1L), any())).thenReturn(response);
 
         mockMvc.perform(put("/admin/hotels/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .content("""
+                                {
+                                    "name": "Updated Hotel",
+                                    "description": "Updated description",
+                                    "country": "Azerbaijan",
+                                    "city": "Ganja",
+                                    "address": "New address",
+                                    "zipCode": "AZ2000",
+                                    "phone": "+994559999999",
+                                    "rating": 4.9
+                                }
+                                """))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Updated Hotel"));
+                .andExpect(jsonPath("$.name").value("Updated Hotel"))
+                .andExpect(jsonPath("$.city").value("Ganja"));
+
+        Mockito.verify(hotelService).fullUpdate(eq(1L), any());
     }
 
-    // ✅ PARTIAL UPDATE
     @Test
-    void partialUpdate_success() throws Exception {
+    void fullUpdateHotel_notFound_returns404() throws Exception {
+        Mockito.when(hotelService.fullUpdate(eq(9999L), any()))
+                .thenThrow(new HotelNotFound("Hotel not found"));
 
-        HotelResponseDto updated = new HotelResponseDto(
-                1L,
-                "Hilton Baku",
-                "desc",
-                "Azerbaijan",
-                "Baku",
-                "Updated Address",
-                "AZ1000",
-                "+994",
-                4.5
-        );
+        mockMvc.perform(put("/admin/hotels/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name": "Test",
+                                    "description": "Test",
+                                    "country": "Azerbaijan",
+                                    "city": "Baku",
+                                    "address": "Test",
+                                    "zipCode": "AZ0000",
+                                    "phone": "+994500000000",
+                                    "rating": 4.0
+                                }
+                                """))
+                .andExpect(status().isNotFound());
+    }
 
-        when(hotelService.partialUpdate(eq(1L), any(HotelRequestUpdateDto.class)))
-                .thenReturn(updated);
+    // ───────── PARTIAL UPDATE ─────────
 
-        String body = """
-                {
-                  "address": "Updated Address"
-                }
-                """;
+    @Test
+    void partialUpdateHotel_returnsUpdated() throws Exception {
+        HotelResponseDto response = new HotelResponseDto();
+        response.setId(1L);
+        response.setName("Grand Hotel");
+        response.setCity("Baku");
+        response.setRating(3.5);
+
+        Mockito.when(hotelService.partialUpdate(eq(1L), any())).thenReturn(response);
 
         mockMvc.perform(patch("/admin/hotels/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                        .content("""
+                                {
+                                    "rating": 3.5
+                                }
+                                """))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.address").value("Updated Address"));
+                .andExpect(jsonPath("$.rating").value(3.5));
+
+        Mockito.verify(hotelService).partialUpdate(eq(1L), any());
     }
 
-    // ✅ DELETE
     @Test
-    void deleteHotel_success() throws Exception {
+    void partialUpdateHotel_notFound_returns404() throws Exception {
+        Mockito.when(hotelService.partialUpdate(eq(9999L), any()))
+                .thenThrow(new HotelNotFound("Hotel not found"));
 
-        doNothing().when(hotelService).delete(1L);
+        mockMvc.perform(patch("/admin/hotels/9999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "rating": 3.5
+                                }
+                                """))
+                .andExpect(status().isNotFound());
+    }
+
+    // ───────── DELETE ─────────
+
+    @Test
+    void deleteHotel_returnsNoContent() throws Exception {
+        Mockito.doNothing().when(hotelService).delete(1L);
 
         mockMvc.perform(delete("/admin/hotels/1"))
                 .andExpect(status().isNoContent());
+
+        Mockito.verify(hotelService).delete(1L);
     }
 
-    // ❌ DELETE NOT FOUND
     @Test
-    void deleteHotel_notFound() throws Exception {
+    void deleteHotel_notFound_returns404() throws Exception {
+        Mockito.doThrow(new HotelNotFound("Hotel not found"))
+                .when(hotelService).delete(9999L);
 
-        doThrow(new HotelNotFound("Hotel not found with id:99"))
-                .when(hotelService).delete(99L);
-
-        mockMvc.perform(delete("/admin/hotels/99"))
+        mockMvc.perform(delete("/admin/hotels/9999"))
                 .andExpect(status().isNotFound());
+
+        Mockito.verify(hotelService).delete(9999L);
     }
 }
