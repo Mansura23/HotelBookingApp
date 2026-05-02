@@ -1,9 +1,5 @@
 package org.ironhack.hotelbookingapp.dto.response;
-
-import jakarta.persistence.*;
 import lombok.Data;
-import org.ironhack.hotelbookingapp.entity.Room;
-import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.enums.BookingStatus;
 
 import java.math.BigDecimal;
