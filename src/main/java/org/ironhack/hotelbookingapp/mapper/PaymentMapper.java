@@ -28,7 +28,8 @@ public class PaymentMapper {
                 payment.getPaymentMethod(),
                 payment.getStatus(),
                 payment.getCreatedAt(),
-                payment.getPaidAt()
+                payment.getUpdatedAt()
+
         );
     }
 }
