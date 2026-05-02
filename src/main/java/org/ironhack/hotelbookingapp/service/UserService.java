@@ -72,22 +72,29 @@ public class UserService {
 
     public String loginUser(LoginRequest request) {
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
-            );
+        User user = userRepository.findByEmail(request.getEmail());
 
-            User user = userRepository.findByEmail(request.getEmail());
-            UserDetails userDetails = new UserPrincipal(user);
-
-            return jwtService.generateToken(userDetails);
-
-        } catch (BadCredentialsException e) {
+        if (user == null) {
             throw new InvalidCredantialsException("Invalid credentials");
         }
+
+        if (user.getStatus() != Status.ACTIVE) {
+            throw new UserNotActiveException("User account is inactive. Please contact support.");
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        if (authentication.isAuthenticated()) {
+            UserDetails userDetails = new UserPrincipal(user);
+            return jwtService.generateToken(userDetails);
+        }
+
+        throw new InvalidCredantialsException("Invalid credentials");
     }
     @Transactional
     public  User findById(Long id) {
