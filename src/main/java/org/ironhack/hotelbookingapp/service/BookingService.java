@@ -43,13 +43,8 @@ public class BookingService {
         if(user==null){
             throw new UsernameNotFoundException("User not found");
         }
-        /// //
-        if (user.getStatus() != Status.ACTIVE) {
-            throw new UserNotActiveException("User is not active");
-        }
         Room room = roomRepository.findById(dto.getRoomId())
                 .orElseThrow(() -> new RoomNotFound("Room not found"));
-
 
         if (dto.getCheckInDate().isBefore(LocalDate.now())) {
             throw new InvalidCheckInDateException("Invalid check-in date");
@@ -163,19 +158,16 @@ public class BookingService {
         if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
             throw new RuntimeException("Already cancelled");
         }
-
         // PENDING →  cancel
         if (booking.getBookingStatus() == BookingStatus.PENDING) {
             booking.setBookingStatus(BookingStatus.CANCELLED);
             bookingRepository.save(booking);
             return;
         }
-
         // CONFIRMED → refund check
         if (LocalDate.now().plusDays(1).isAfter(booking.getCheckInDate())) {
             throw new CanNotCancelledException("Too late to cancel");
         }
-
         //  refund
         paymentService.refund(booking);
 
