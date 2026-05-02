@@ -21,5 +21,5 @@ public class PaymentResponseDto {
     private PaymentMethod paymentMethod;
     private PaymentStatus status;
     private LocalDateTime createdAt;
-    private LocalDateTime paidAt;
+    private LocalDateTime updatedAt;
 }

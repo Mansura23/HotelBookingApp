@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ironhack.hotelbookingapp.dto.request.PaymentRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.PaymentResponseDto;
@@ -17,7 +18,7 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public PaymentResponseDto pay(@RequestBody PaymentRequestDto dto) {
+    public PaymentResponseDto pay(@Valid @RequestBody PaymentRequestDto dto) {
         return paymentService.pay(dto);
     }
 }

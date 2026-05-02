@@ -2,7 +2,6 @@ package org.ironhack.hotelbookingapp.mapper;
 
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
-import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
 import org.ironhack.hotelbookingapp.dto.response.RoomResponseDto;

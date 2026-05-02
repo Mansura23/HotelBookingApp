@@ -25,14 +25,14 @@ public class UserController {
 
     @PutMapping("/me")
     public UserResponseDto updateMe(
-            @RequestBody UpdateUserRequestDto dto,
+            @Valid @RequestBody UpdateUserRequestDto dto,
             @RequestHeader("Authorization") String authHeader
     ) {
         return userService.updateMe(dto, authHeader);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public String login(@Valid @RequestBody LoginRequest loginRequest) {
         return userService.loginUser(loginRequest);
     }
 

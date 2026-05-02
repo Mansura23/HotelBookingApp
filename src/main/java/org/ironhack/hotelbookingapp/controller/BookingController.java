@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.ironhack.hotelbookingapp.dto.request.BookingRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
@@ -16,7 +17,7 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingResponseDto create(@RequestBody BookingRequestDto dto) {
+    public BookingResponseDto create(@Valid @RequestBody BookingRequestDto dto) {
         return bookingService.createBooking(dto);
     }
 

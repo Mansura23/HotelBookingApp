@@ -1,11 +1,8 @@
 package org.ironhack.hotelbookingapp.mapper;
 import org.ironhack.hotelbookingapp.dto.request.UserRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
-import org.ironhack.hotelbookingapp.dto.response.HotelResponseDtoForUser;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseForBooking;
-import org.ironhack.hotelbookingapp.entity.Booking;
-import org.ironhack.hotelbookingapp.entity.Hotel;
 import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.enums.Role;
 import org.ironhack.hotelbookingapp.enums.Status;

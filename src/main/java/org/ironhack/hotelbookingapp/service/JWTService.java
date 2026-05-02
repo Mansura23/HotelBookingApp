@@ -39,16 +39,6 @@ public class JWTService {
                 .compact();
     }
 
-//    public String generateToken(String email) {
-//        return Jwts.builder()
-//                .subject(email)
-//                .issuedAt(new Date(System.currentTimeMillis()))
-//                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 30)) // FIX
-//                .signWith(getKey())
-//                .compact();
-//    }
-
-
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

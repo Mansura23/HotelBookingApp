@@ -7,6 +7,8 @@ import org.ironhack.hotelbookingapp.entity.Booking;
 import org.ironhack.hotelbookingapp.entity.Payment;
 import org.ironhack.hotelbookingapp.entity.User;
 import org.ironhack.hotelbookingapp.enums.BookingStatus;
+import org.ironhack.hotelbookingapp.enums.Currency;
+import org.ironhack.hotelbookingapp.enums.PaymentMethod;
 import org.ironhack.hotelbookingapp.enums.PaymentStatus;
 import org.ironhack.hotelbookingapp.exception.BookingNotFound;
 import org.ironhack.hotelbookingapp.exception.BookingPayedException;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 public class PaymentService {
@@ -36,7 +39,7 @@ public class PaymentService {
     @Transactional
     public PaymentResponseDto pay(PaymentRequestDto dto) {
 
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getName();
         User user = userRepository.findByEmail(email);
 
         Booking booking = bookingRepository.findByIdAndUser(dto.getBookingId(), user)
@@ -55,6 +58,7 @@ public class PaymentService {
         user.setBalance(user.getBalance().subtract(amount));
 
         Payment payment = PaymentMapper.toEntity(dto,booking);
+        payment.setUpdatedAt((null));
         payment.setStatus(PaymentStatus.SUCCESS);
         payment.setAmount(amount);
 
@@ -79,8 +83,11 @@ public class PaymentService {
         Payment refund = new Payment();
         refund.setBooking(booking);
         refund.setAmount(amount);
-        refund.setStatus(PaymentStatus.SUCCESS);
-        refund.setPaidAt(LocalDateTime.now());
+        refund.setStatus(PaymentStatus.REFUNDED);
+        refund.setUpdatedAt(LocalDateTime.now());
+        refund.setCreatedAt(null);
+        refund.setCurrency(Currency.AZN);
+        refund.setPaymentMethod(PaymentMethod.CARD);
 
         paymentRepository.save(refund);
         userRepository.save(user);

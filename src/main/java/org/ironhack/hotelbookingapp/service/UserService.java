@@ -17,7 +17,6 @@ import org.ironhack.hotelbookingapp.exception.UserNotFoundException;
 import org.ironhack.hotelbookingapp.mapper.UserMapper;
 import org.ironhack.hotelbookingapp.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,9 +64,6 @@ public class UserService {
 //        }
 //
 //    }
-
-
-//    public UserResponseDto loginUser(UserRequestDto userRequestDto) {}
 
 
     public String loginUser(LoginRequest request) {

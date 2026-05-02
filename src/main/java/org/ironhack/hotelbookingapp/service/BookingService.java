@@ -7,7 +7,6 @@ import org.ironhack.hotelbookingapp.dto.response.BookingResponseDto;
 import org.ironhack.hotelbookingapp.entity.Booking;
 import org.ironhack.hotelbookingapp.entity.Room;
 import org.ironhack.hotelbookingapp.entity.User;
-import org.ironhack.hotelbookingapp.entity.UserPrincipal;
 import org.ironhack.hotelbookingapp.enums.BookingStatus;
 import org.ironhack.hotelbookingapp.enums.Status;
 import org.ironhack.hotelbookingapp.exception.*;
