@@ -17,7 +17,7 @@ public class HotelBookingAppApplication {
         SpringApplication.run(HotelBookingAppApplication.class, args);
         System.out.println("Hotel booking app has been started");
     }
-//
+
 //    @Bean
 //    CommandLineRunner init(UserRepository repo, BCryptPasswordEncoder encoder) {
 //        return args -> {
