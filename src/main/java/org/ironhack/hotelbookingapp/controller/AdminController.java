@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.controller;
 
+import jakarta.validation.Valid;
 import org.ironhack.hotelbookingapp.dto.request.AdminUpdateRequestDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseDto;
 import org.ironhack.hotelbookingapp.dto.response.UserResponseForBooking;
@@ -24,7 +25,7 @@ public class AdminController {
     // admin
     @PutMapping("/{id}")
     public UserResponseDto updateByAdmin(@PathVariable Long id,
-                                         @RequestBody AdminUpdateRequestDto dto) {
+                                          @Valid @RequestBody AdminUpdateRequestDto dto) {
         return userService.updateByAdmin(id, dto);
     }
     @DeleteMapping("/{id}")
