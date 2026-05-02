@@ -246,3 +246,117 @@ created_at
 
 
 
+
+hotel-booking-app/
+│
+├── src/main/java/org/ironhack/hotelbookingapp
+│
+│
+├── 📁 controller
+│   ├── AdminController.java
+│   ├── UserController.java
+│   ├── HotelController.java
+│   ├── RoomController.java
+│   ├── BookingController.java
+│   ├── PaymentController.java
+│   └── AllHotelController.java
+│
+│
+├── 📁 service
+│   ├── UserService.java
+│   ├── HotelService.java
+│   ├── RoomService.java
+│   ├── BookingService.java
+│   ├── PaymentService.java
+│   ├── JWTService.java
+│   └── MyUserDetailsService.java
+│
+│
+├── 📁 repository
+│   ├── UserRepository.java
+│   ├── HotelRepository.java
+│   ├── RoomRepository.java
+│   ├── BookingRepository.java
+│   └── PaymentRepository.java
+│
+│
+├── 📁 entity
+│   ├── User.java
+│   ├── UserPrincipal.java
+│   ├── Hotel.java
+│   ├── Room.java
+│   ├── Booking.java
+│   └── Payment.java
+│
+│
+├── 📁 dto
+│   ├── 📁 request
+│   │   ├── UserRequestDto.java
+│   │   ├── LoginRequest.java
+│   │   ├── UpdateUserRequestDto.java
+│   │   ├── AdminUpdateRequestDto.java
+│   │   ├── HotelRequestDto.java
+│   │   ├── HotelRequestUpdateDto.java
+│   │   ├── RoomRequestDto.java
+│   │   ├── RoomRequestUpdateDto.java
+│   │   ├── BookingRequestDto.java
+│   │   └── PaymentRequestDto.java
+│   │
+│   ├── 📁 response
+│       ├── UserResponseDto.java
+│       ├── UserResponseForBooking.java
+│       ├── HotelResponseDto.java
+│       ├── HotelResponseDtoForUser.java
+│       ├── RoomResponseDto.java
+│       ├── BookingResponseDto.java
+│       ├── PaymentResponseDto.java
+│       ├── ErrorResponseDto.java
+│       └── ValidationErrorResponseDto.java
+│
+│
+├── 📁 mapper
+│   ├── UserMapper.java
+│   ├── HotelMapper.java
+│   ├── RoomMapper.java
+│   ├── BookingMapper.java
+│   └── PaymentMapper.java
+│
+│
+├── 📁 security
+│   ├── SecurityConfig.java
+│   ├── JWTFilter.java
+│
+│
+├── 📁 enums
+│   ├── Role.java
+│   ├── Status.java
+│   ├── RoomType.java
+│   ├── BookingStatus.java
+│   ├── PaymentStatus.java
+│   ├── PaymentMethod.java
+│   └── Currency.java
+│
+│
+├── 📁 exception
+│   ├── GlobalExceptionHandler.java
+│   ├── UserNotFoundException.java
+│   ├── HotelNotFound.java
+│   ├── RoomNotFound.java
+│   ├── BookingNotFound.java
+│   ├── UserExistsException.java
+│   ├── RoomExistsException.java
+│   ├── HotelExistsException.java
+│   ├── InsufficientBalanceException.java
+│   ├── UserNotActiveException.java
+│   ├── InvalidCheckInDateException.java
+│   ├── InvalidDateException.java
+│   └── ... (digər custom exceptions)
+│
+│
+├── HotelBookingAppApplication.java
+│
+└── resources
+    ├── application.properties
+
+
+
