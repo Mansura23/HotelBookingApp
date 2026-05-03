@@ -2,9 +2,9 @@
 
 A Spring Boot REST API for a hotel booking platform with JWT authentication, role-based access control, booking management, payments, and admin operations.
 Team's LinkedIn profiles
-http://linkedin.com/in/mansura-badalova-3079b4293
-https://www.linkedin.com/in/ülvihaciyev2006?utm_source=share_via&utm_content=profile&utm_medium=member_android
-https://www.linkedin.com/in/gurban-al%C4%B1ev-075b67407/
+Mansura--http://linkedin.com/in/mansura-badalova-3079b4293
+Ulvi--https://www.linkedin.com/in/ülvihaciyev2006?utm_source=share_via&utm_content=profile&utm_medium=member_android
+Gurbanali--https://www.linkedin.com/in/gurban-al%C4%B1ev-075b67407/
 
 ---
 Our Project Entity diagram
