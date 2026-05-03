@@ -88,6 +88,7 @@ public class UserService {
     }
 
     // USER
+    @Transactional
     public UserResponseDto updateMe(UpdateUserRequestDto dto, String authHeader) {
 
         String token = authHeader.substring(7);

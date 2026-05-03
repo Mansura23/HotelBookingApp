@@ -1,5 +1,6 @@
 package org.ironhack.hotelbookingapp.service;
 
+import jakarta.transaction.Transactional;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestDto;
 import org.ironhack.hotelbookingapp.dto.request.HotelRequestUpdateDto;
 import org.ironhack.hotelbookingapp.dto.response.HotelResponseDto;
@@ -21,7 +22,7 @@ public class HotelService {
     public HotelService(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
     }
-
+    @Transactional
     public Hotel findByIdOrThrow(long id) {
         return hotelRepository.findById(id)
                 .orElseThrow(()-> new HotelNotFound("Hotel with id " + id + " not found"));
@@ -35,7 +36,7 @@ public class HotelService {
         Hotel savedHotel = hotelRepository.save(hotel);
         return HotelMapper.toResponseDto(savedHotel);
     }
-
+    @Transactional
     public HotelResponseDto fullUpdate(Long id, HotelRequestDto requestDto) {
         Hotel hotel = findByIdOrThrow(id);
 
@@ -51,7 +52,7 @@ public class HotelService {
         Hotel updatedHotel = hotelRepository.save(hotel);
         return HotelMapper.toResponseDto(updatedHotel);
     }
-
+    @Transactional
     public HotelResponseDto partialUpdate(Long id, HotelRequestUpdateDto updateDto) {
         Hotel hotel = findByIdOrThrow(id);
 
@@ -60,7 +61,7 @@ public class HotelService {
         Hotel updatedHotel = hotelRepository.save(hotel);
         return HotelMapper.toResponseDto(updatedHotel);
     }
-
+    @Transactional
     public HotelResponseDto getById(Long id) {
         Hotel hotel = findByIdOrThrow(id);
         return HotelMapper.toResponseDto(hotel);
@@ -69,7 +70,7 @@ public class HotelService {
     public List<HotelResponseDtoForUser> getAll(){
         return HotelMapper.toResponseList(hotelRepository.findAll());
     }
-
+   @Transactional
     public void delete(Long id) {
         Hotel hotel = findByIdOrThrow(id);
         hotelRepository.delete(hotel);
