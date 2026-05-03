@@ -69,6 +69,8 @@ public class BookingService {
         BigDecimal totalPrice = room.getPricePerNight()
                 .multiply(BigDecimal.valueOf(days));
 
+        room.setAvailable(false);
+
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setRoom(room);
