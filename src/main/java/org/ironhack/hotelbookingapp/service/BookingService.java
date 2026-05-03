@@ -160,6 +160,10 @@ public class BookingService {
         if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
             throw new RuntimeException("Already cancelled");
         }
+        Room room = roomRepository.findById(booking.getRoom().getId())
+                .orElseThrow(() -> new RoomNotFound("Room not found"));
+        room.setAvailable(true);
+        booking.setRoom(room);
         // PENDING →  cancel
         if (booking.getBookingStatus() == BookingStatus.PENDING) {
             booking.setBookingStatus(BookingStatus.CANCELLED);
