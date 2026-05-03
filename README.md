@@ -6,6 +6,7 @@ Mansura--http://linkedin.com/in/mansura-badalova-3079b4293
 Ulvi--https://www.linkedin.com/in/ülvihaciyev2006?utm_source=share_via&utm_content=profile&utm_medium=member_android
 Gurbanali--https://www.linkedin.com/in/gurban-al%C4%B1ev-075b67407/
 
+trello-----https://trello.com/b/bHep5idw/hotelbookingapp
 ---
 Our Project Entity diagram
 https://dbdiagram.io/d/69d81fea80896296845f911b
