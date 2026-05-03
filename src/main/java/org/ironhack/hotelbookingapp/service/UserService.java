@@ -33,7 +33,7 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
-    private  final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public UserResponseDto registerUser(UserRequestDto userRequestDto) {
-        if(userRepository.findByEmail(userRequestDto.getEmail())!=null) {
+        if (userRepository.findByEmail(userRequestDto.getEmail()) != null) {
             throw new UserExistsException("User with email already exists");
         }
         User user = UserMapper.toEntity(userRequestDto);
@@ -52,18 +52,6 @@ public class UserService {
         userRepository.save(user);
         return UserMapper.userToUserResponseDto(user);
     }
-
-//    public String loginUser(UserRequestDto userRequestDto) {
-//        User user=UserMapper.toEntity(userRequestDto);
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-//        if (authentication.isAuthenticated()) {
-//            User dbUser = userRepository.findByEmail(user.getEmail());
-//            return jwtService.generateToken(dbUser.getEmail());
-//        } else {
-//            return "fail";
-//        }
-//
-//    }
 
 
     public String loginUser(LoginRequest request) {
@@ -92,25 +80,27 @@ public class UserService {
 
         throw new InvalidCredantialsException("Invalid credentials");
     }
+
     @Transactional
-    public  User findById(Long id) {
-       return userRepository.findById(id)
-               .orElseThrow(() -> new UserNotFoundException("User not found"));
+    public User findById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
     // USER
     public UserResponseDto updateMe(UpdateUserRequestDto dto, String authHeader) {
 
         String token = authHeader.substring(7);
         String email = jwtService.extractUserName(token);
         User user = userRepository.findByEmail(email);
-        if (user.getStatus()!=Status.ACTIVE) {
+        if (user.getStatus() != Status.ACTIVE) {
             throw new UserNotActiveException("User is not active");
         }
-        if(dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
-        if(dto.getLastName() != null) user.setLastName(dto.getLastName());
-        if(dto.getNumber() != null) user.setNumber(dto.getNumber());
+        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) user.setLastName(dto.getLastName());
+        if (dto.getNumber() != null) user.setNumber(dto.getNumber());
 
-        if(dto.getPassword() != null) {
+        if (dto.getPassword() != null) {
             user.setPassword(encoder.encode(dto.getPassword()));
         }
 
@@ -118,36 +108,37 @@ public class UserService {
 
         return UserMapper.userToUserResponseDto(user);
     }
+
     // ADMIN
     @Transactional
     public UserResponseDto updateByAdmin(Long id,
                                          AdminUpdateRequestDto dto) {
-        User user=findById(id);
-        if(dto.getFirstName() != null) {
+        User user = findById(id);
+        if (dto.getFirstName() != null) {
             user.setFirstName(dto.getFirstName());
         }
 
-        if(dto.getLastName() != null) {
+        if (dto.getLastName() != null) {
             user.setLastName(dto.getLastName());
         }
 
-        if(dto.getNumber() != null) {
+        if (dto.getNumber() != null) {
             user.setNumber(dto.getNumber());
         }
 
-        if(dto.getPassword() != null) {
+        if (dto.getPassword() != null) {
             user.setPassword(encoder.encode(dto.getPassword()));
         }
 
-        if(dto.getRole() != null) {
+        if (dto.getRole() != null) {
             user.setRole(dto.getRole());
         }
 
-        if(dto.getStatus() != null) {
+        if (dto.getStatus() != null) {
             user.setStatus(dto.getStatus());
         }
 
-        if(dto.getBalance() != null) {
+        if (dto.getBalance() != null) {
             user.setBalance(dto.getBalance());
         }
         userRepository.save(user);
@@ -165,11 +156,11 @@ public class UserService {
 
     @Transactional
     public UserResponseDto addBalance(Long userId, BigDecimal amount) {
-        if(amount.compareTo(BigDecimal.ZERO) <= 0) {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Amount must be positive");
         }
         User user = findById(userId);
-        if(user.getStatus()!=Status.ACTIVE) {
+        if (user.getStatus() != Status.ACTIVE) {
             throw new UserNotActiveException("User is not active");
         }
         user.setBalance(user.getBalance().add(amount));
@@ -196,8 +187,6 @@ public class UserService {
 
         return UserMapper.toResponseDtoForBooking(user);
     }
-
-
 
 
 }
