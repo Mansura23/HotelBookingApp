@@ -1,4 +1,4 @@
-#  Hotel Booking System API
+# StayCosy API
 
 A Spring Boot REST API for a hotel booking platform with JWT authentication, role-based access control, booking management, payments, and admin operations.
 Team's LinkedIn profiles
